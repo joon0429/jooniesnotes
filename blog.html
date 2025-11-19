@@ -50,17 +50,10 @@
     </footer>
     
     <script src="js/utils.js"></script>
+    <script src="js/common.js"></script>
     <script src="js/api.js"></script>
     <script src="js/notepad-popup.js"></script>
     <script>
-        // Initialize theme
-        const theme = getTheme();
-        document.body.className = 'theme-' + theme;
-        document.getElementById('theme-select').value = theme;
-        
-        function changeThemeFromNav(themeName) {
-            setTheme(themeName);
-        }
         
         function openNewNote(type) {
             notepadPopup.createWindow(null, type);

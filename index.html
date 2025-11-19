@@ -79,17 +79,10 @@
         </div>
     </footer>
     
-    <script src="js/gallery.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/gallery.js"></script>
     <script>
-        // Initialize theme
-        const theme = getTheme();
-        document.body.className = 'theme-' + theme;
-        document.getElementById('theme-select').value = theme;
-        
-        function changeThemeFromNav(themeName) {
-            setTheme(themeName);
-        }
         
         // Initialize gallery
         document.addEventListener('DOMContentLoaded', () => {

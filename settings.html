@@ -81,15 +81,8 @@
     </footer>
     
     <script src="js/utils.js"></script>
+    <script src="js/common.js"></script>
     <script>
-        // Initialize theme
-        const theme = getTheme();
-        document.body.className = 'theme-' + theme;
-        document.getElementById('theme-select').value = theme;
-        
-        function changeThemeFromNav(themeName) {
-            setTheme(themeName);
-        }
         
         // Load user info on page load
         function loadUserInfo() {
