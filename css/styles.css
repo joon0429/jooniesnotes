@@ -55,10 +55,57 @@ nav .nav-links a {
     color: var(--accent-color);
     font-size: 16px;
     font-weight: var(--nav-link-bold);
+    text-transform: lowercase;
 }
 
 nav .nav-links a:hover {
     color: var(--accent-hover);
+}
+
+/* Links Dropdown */
+nav .nav-links .links-dropdown {
+    position: relative;
+    margin-right: 20px;
+}
+
+nav .nav-links .links-dropdown > a {
+    margin-right: 0;
+}
+
+nav .nav-links .links-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--bg-primary);
+    border: var(--border-thickness) solid var(--border-color);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+    min-width: 180px;
+    margin-top: 5px;
+}
+
+nav .nav-links .links-dropdown:hover .links-dropdown-menu {
+    display: block;
+}
+
+nav .nav-links .links-dropdown-menu a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 14px;
+    text-transform: lowercase;
+    border-bottom: var(--border-thickness) solid var(--border-color);
+}
+
+nav .nav-links .links-dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+nav .nav-links .links-dropdown-menu a:hover {
+    background-color: var(--bg-secondary);
+    color: var(--accent-color);
 }
 
 nav .settings-btn {

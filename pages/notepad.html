@@ -9,114 +9,122 @@
 <body>
     <nav>
         <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="blog.html">Blog</a>
-            <a href="private.html">Private Notes</a>
-            <a href="links.html">Links</a>
-            <a href="resume.html">Resume</a>
+            <a href="index.html">home</a>
+            <a href="blog.html">blog</a>
+            <a href="private.html">private notes</a>
+            <div class="links-dropdown">
+                <a href="#">links</a>
+                <div class="links-dropdown-menu">
+                    <a href="https://www.instagram.com/joonkwonn/" target="_blank">personal instagram</a>
+                    <a href="https://www.instagram.com/jooniesflowerss/" target="_blank">flower instagram</a>
+                    <a href="https://www.youtube.com/@joonkwonn" target="_blank">youtube channel</a>
+                    <a href="https://www.linkedin.com/in/joonkwonn/" target="_blank">linkedin</a>
+                </div>
+            </div>
+            <a href="resume.html">resume</a>
         </div>
         <div class="nav-right">
             <div class="theme-selector-nav">
                 <select id="theme-select" onchange="changeThemeFromNav(this.value)">
-                    <option value="light">Light</option>
-                    <option value="dark-pink">Dark Pink</option>
-                    <option value="blue">Blue</option>
-                    <option value="green">Green</option>
-                    <option value="purple">Purple</option>
+                    <option value="light">light</option>
+                    <option value="dark-pink">dark pink</option>
+                    <option value="blue">blue</option>
+                    <option value="green">green</option>
+                    <option value="purple">purple</option>
                 </select>
             </div>
-            <a href="settings.html" class="settings-btn">Settings</a>
+            <a href="settings.html" class="settings-btn">settings</a>
         </div>
     </nav>
     <main class="notepad-container">
         <div id="password-prompt" class="password-prompt" style="display: none;">
-            <h2>Enter Password</h2>
-            <input type="password" id="note-password-input" placeholder="Note password">
-            <button onclick="checkNotePassword()">Open Note</button>
+            <h2>enter password</h2>
+            <input type="password" id="note-password-input" placeholder="note password">
+            <button onclick="checkNotePassword()">open note</button>
             <p id="note-password-error" class="error"></p>
         </div>
         <div id="notepad-content" style="display: none;">
             <!-- Notepad Menu Bar -->
             <div class="notepad-menubar">
                 <div class="menu-item" onclick="toggleMenu('file-menu')">
-                    File
+                    file
                     <div id="file-menu" class="dropdown-menu">
-                        <div onclick="saveNote()">Save</div>
-                        <div onclick="deleteNote()">Delete</div>
-                        <div onclick="window.location.href = document.querySelector('input[name=\"save-type\"]:checked').value === 'public' ? 'blog.html' : 'private.html'">Exit</div>
+                        <div onclick="saveNote()">save</div>
+                        <div onclick="deleteNote()">delete</div>
+                        <div onclick="window.location.href = document.querySelector('input[name=\"save-type\"]:checked').value === 'public' ? 'blog.html' : 'private.html'">exit</div>
                     </div>
                 </div>
                 <div class="menu-item" onclick="toggleMenu('edit-menu')">
-                    Edit
+                    edit
                     <div id="edit-menu" class="dropdown-menu">
-                        <div onclick="document.getElementById('notepad-textarea').select(); document.execCommand('copy');">Copy</div>
-                        <div onclick="document.execCommand('paste');">Paste</div>
-                        <div onclick="document.execCommand('selectAll');">Select All</div>
+                        <div onclick="document.getElementById('notepad-textarea').select(); document.execCommand('copy');">copy</div>
+                        <div onclick="document.execCommand('paste');">paste</div>
+                        <div onclick="document.execCommand('selectAll');">select all</div>
                     </div>
                 </div>
                 <div class="menu-item" onclick="toggleMenu('format-menu')">
-                    Format
+                    format
                     <div id="format-menu" class="dropdown-menu">
-                        <div onclick="applyFormatting('bold')">Bold</div>
-                        <div onclick="applyFormatting('italic')">Italic</div>
-                        <div onclick="applyFormatting('underline')">Underline</div>
+                        <div onclick="applyFormatting('bold')">bold</div>
+                        <div onclick="applyFormatting('italic')">italic</div>
+                        <div onclick="applyFormatting('underline')">underline</div>
                         <div style="border-top: 1px solid #ccc; margin: 4px 0;"></div>
                         <div onclick="toggleViewMode()">
-                            <span id="view-mode-text">View: Text</span>
+                            <span id="view-mode-text">view: text</span>
                         </div>
                     </div>
                 </div>
                 <div class="menu-item" onclick="toggleMenu('view-menu')">
-                    View
+                    view
                     <div id="view-menu" class="dropdown-menu">
-                        <div onclick="openThemeSelector()">Theme</div>
+                        <div onclick="openThemeSelector()">theme</div>
                     </div>
                 </div>
                 <div class="menu-item" onclick="toggleMenu('help-menu')">
-                    Help
+                    help
                     <div id="help-menu" class="dropdown-menu">
-                        <div onclick="alert('Markdown supported: # Headers, **bold**, *italic*, - lists, [links](url)')">About Markdown</div>
+                        <div onclick="alert('markdown supported: # headers, **bold**, *italic*, - lists, [links](url)')">about markdown</div>
                     </div>
                 </div>
             </div>
             
             <!-- Notepad Toolbar (minimal, like Notepad) -->
             <div class="notepad-toolbar">
-                <input type="text" id="note-title" placeholder="Untitled" class="title-input">
+                <input type="text" id="note-title" placeholder="untitled" class="title-input">
                 <div class="formatting-buttons">
-                    <button class="format-btn" onclick="applyFormatting('bold')" title="Bold (Ctrl+B)"><strong>B</strong></button>
-                    <button class="format-btn" onclick="applyFormatting('italic')" title="Italic (Ctrl+I)"><em>I</em></button>
-                    <button class="format-btn" onclick="applyFormatting('underline')" title="Underline (Ctrl+U)"><u>U</u></button>
+                    <button class="format-btn" onclick="applyFormatting('bold')" title="bold (ctrl+b)"><strong>B</strong></button>
+                    <button class="format-btn" onclick="applyFormatting('italic')" title="italic (ctrl+i)"><em>I</em></button>
+                    <button class="format-btn" onclick="applyFormatting('underline')" title="underline (ctrl+u)"><u>U</u></button>
                 </div>
                 <div class="toolbar-right">
                     <label class="file-upload-btn">
                         <input type="file" id="file-input" accept="image/*,.pdf" onchange="handleFileUpload(event)" style="display: none;">
                         📎
                     </label>
-                    <div class="theme-toggle" onclick="openThemeSelector()" title="Change Theme">🎨</div>
+                    <div class="theme-toggle" onclick="openThemeSelector()" title="change theme">🎨</div>
                 </div>
             </div>
             
             <!-- Save Options (hidden by default, shown on hover or in menu) -->
             <div class="save-options-collapsed">
-                <div class="save-options-toggle" onclick="toggleSaveOptions()">⚙️ Options</div>
+                <div class="save-options-toggle" onclick="toggleSaveOptions()">⚙️ options</div>
                 <div id="save-options-content" class="save-options-content" style="display: none;">
                     <div class="save-options">
-                        <label><input type="radio" name="save-type" value="private" checked> Private</label>
-                        <label><input type="radio" name="save-type" value="public"> Public</label>
+                        <label><input type="radio" name="save-type" value="private" checked> private</label>
+                        <label><input type="radio" name="save-type" value="public"> public</label>
                     </div>
                     <div class="password-options">
                         <label>
-                            <input type="checkbox" id="protect-note"> Protect with password
+                            <input type="checkbox" id="protect-note"> protect with password
                         </label>
-                        <input type="password" id="note-password" placeholder="Note password (optional)" style="display: none;">
+                        <input type="password" id="note-password" placeholder="note password (optional)" style="display: none;">
                     </div>
                 </div>
             </div>
             
             <!-- Textarea and Preview -->
             <div class="notepad-editor-container">
-                <textarea id="notepad-textarea" class="notepad-textarea" placeholder="Start typing..."></textarea>
+                <textarea id="notepad-textarea" class="notepad-textarea" placeholder="start typing..."></textarea>
                 <div id="markdown-preview" class="markdown-preview" style="display: none;"></div>
             </div>
             
@@ -128,29 +136,29 @@
     <div id="theme-modal" class="theme-modal" style="display: none;">
         <div class="theme-modal-content">
             <div class="theme-modal-header">
-                <h3>Select Theme</h3>
+                <h3>select theme</h3>
                 <span class="close-theme" onclick="closeThemeSelector()">&times;</span>
             </div>
             <div class="theme-options">
                 <div class="theme-option" onclick="setThemeLocal('light')" data-theme="light">
                     <div class="theme-preview light-preview"></div>
-                    <span>Light</span>
+                    <span>light</span>
                 </div>
                 <div class="theme-option" onclick="setThemeLocal('dark-pink')" data-theme="dark-pink">
                     <div class="theme-preview dark-pink-preview"></div>
-                    <span>Dark Pink</span>
+                    <span>dark pink</span>
                 </div>
                 <div class="theme-option" onclick="setThemeLocal('blue')" data-theme="blue">
                     <div class="theme-preview blue-preview"></div>
-                    <span>Blue</span>
+                    <span>blue</span>
                 </div>
                 <div class="theme-option" onclick="setThemeLocal('green')" data-theme="green">
                     <div class="theme-preview green-preview"></div>
-                    <span>Green</span>
+                    <span>green</span>
                 </div>
                 <div class="theme-option" onclick="setThemeLocal('purple')" data-theme="purple">
                     <div class="theme-preview purple-preview"></div>
-                    <span>Purple</span>
+                    <span>purple</span>
                 </div>
             </div>
         </div>
@@ -262,11 +270,11 @@
                 textarea.style.display = 'none';
                 preview.style.display = 'block';
                 updateMarkdownPreview();
-                viewModeText.textContent = 'View: Markdown';
+                viewModeText.textContent = 'view: markdown';
             } else {
                 textarea.style.display = 'block';
                 preview.style.display = 'none';
-                viewModeText.textContent = 'View: Text';
+                viewModeText.textContent = 'view: text';
             }
         }
         
@@ -365,7 +373,7 @@
                 displayNote(note);
             }).catch(error => {
                 console.error('Error loading note:', error);
-                alert('Error loading note');
+                alert('error loading note');
             });
         }
         
@@ -379,7 +387,7 @@
                     document.getElementById('password-prompt').style.display = 'none';
                     displayNote(note);
                 } else {
-                    document.getElementById('note-password-error').textContent = 'Incorrect password';
+                    document.getElementById('note-password-error').textContent = 'incorrect password';
                 }
             }).catch(error => {
                 console.error('Error checking password:', error);
@@ -416,7 +424,7 @@
         }
         
         async function saveNote() {
-            const title = document.getElementById('note-title').value || 'Untitled';
+            const title = document.getElementById('note-title').value || 'untitled';
             const content = document.getElementById('notepad-textarea').value;
             const saveType = document.querySelector('input[name="save-type"]:checked').value;
             const protectNote = document.getElementById('protect-note').checked;
@@ -457,11 +465,11 @@
                     }
                 }
                 
-                alert('Note saved!');
+                alert('note saved!');
                 window.location.href = saveType === 'public' ? 'blog.html' : 'private.html';
             } catch (error) {
                 console.error('Error saving note:', error);
-                alert('Error saving note. Please try again.');
+                alert('error saving note. please try again.');
             }
         }
         
@@ -471,11 +479,11 @@
             if (confirm('Are you sure you want to delete this note?')) {
                 try {
                     await notesAPI.deleteNote(currentNoteType, currentNoteId);
-                    alert('Note deleted!');
+                    alert('note deleted!');
                     window.location.href = currentNoteType === 'public' ? 'blog.html' : 'private.html';
                 } catch (error) {
                     console.error('Error deleting note:', error);
-                    alert('Error deleting note. Please try again.');
+                    alert('error deleting note. please try again.');
                 }
             }
         }
