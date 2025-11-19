@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Links - Joon's Notes</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="private.html">Private Notes</a>
+            <a href="links.html">Links</a>
+            <a href="resume.html">Resume</a>
+        </div>
+        <div class="nav-right">
+            <div class="theme-selector-nav">
+                <select id="theme-select" onchange="changeThemeFromNav(this.value)">
+                    <option value="light">Light</option>
+                    <option value="dark-pink">Dark Pink</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                </select>
+            </div>
+            <a href="settings.html" class="settings-btn">Settings</a>
+        </div>
+    </nav>
+    <main>
+        <h1>Links</h1>
+        <div class="links-container">
+            <div class="link-item">
+                <h2>LinkedIn</h2>
+                <p>Connect with me on LinkedIn</p>
+                <a href="#" id="linkedin-link" class="external-link-btn" target="_blank">Visit LinkedIn</a>
+            </div>
+            <div class="link-item">
+                <h2>YouTube</h2>
+                <p>Check out my YouTube channel</p>
+                <a href="#" id="youtube-link" class="external-link-btn" target="_blank">Visit YouTube</a>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Contact</h3>
+            <div class="footer-links">
+                <a href="#" id="footer-email" class="footer-link">Email</a>
+                <a href="#" id="footer-phone" class="footer-link">Phone</a>
+                <a href="#" id="footer-instagram" class="footer-link">Instagram</a>
+                <a href="#" id="footer-linkedin" class="footer-link">LinkedIn</a>
+                <a href="#" id="footer-youtube" class="footer-link">YouTube</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/utils.js"></script>
+    <script>
+        // Initialize theme
+        const theme = getTheme();
+        document.body.className = 'theme-' + theme;
+        document.getElementById('theme-select').value = theme;
+        
+        function changeThemeFromNav(themeName) {
+            setTheme(themeName);
+        }
+        
+        // Load links from settings (to be updated later)
+        // For now, these are placeholders
+    </script>
+</body>
+</html>
+
