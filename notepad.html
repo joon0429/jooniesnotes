@@ -132,23 +132,23 @@
                 <span class="close-theme" onclick="closeThemeSelector()">&times;</span>
             </div>
             <div class="theme-options">
-                <div class="theme-option" onclick="setTheme('light')" data-theme="light">
+                <div class="theme-option" onclick="setThemeLocal('light')" data-theme="light">
                     <div class="theme-preview light-preview"></div>
                     <span>Light</span>
                 </div>
-                <div class="theme-option" onclick="setTheme('dark-pink')" data-theme="dark-pink">
+                <div class="theme-option" onclick="setThemeLocal('dark-pink')" data-theme="dark-pink">
                     <div class="theme-preview dark-pink-preview"></div>
                     <span>Dark Pink</span>
                 </div>
-                <div class="theme-option" onclick="setTheme('blue')" data-theme="blue">
+                <div class="theme-option" onclick="setThemeLocal('blue')" data-theme="blue">
                     <div class="theme-preview blue-preview"></div>
                     <span>Blue</span>
                 </div>
-                <div class="theme-option" onclick="setTheme('green')" data-theme="green">
+                <div class="theme-option" onclick="setThemeLocal('green')" data-theme="green">
                     <div class="theme-preview green-preview"></div>
                     <span>Green</span>
                 </div>
-                <div class="theme-option" onclick="setTheme('purple')" data-theme="purple">
+                <div class="theme-option" onclick="setThemeLocal('purple')" data-theme="purple">
                     <div class="theme-preview purple-preview"></div>
                     <span>Purple</span>
                 </div>
@@ -156,15 +156,14 @@
         </div>
     </div>
     
-    <script src="app.js"></script>
-    <script src="markdown.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/markdown.js"></script>
+    <script src="js/common.js"></script>
     <script>
         let currentNoteId = null;
         let currentNoteType = null;
         let viewMode = 'text'; // 'text' or 'markdown'
-        
-        // Load theme on page load
-        loadTheme();
         
         // Get note ID and type from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -342,48 +341,49 @@
             document.getElementById('theme-modal').style.display = 'none';
         }
         
-        function setTheme(themeName) {
-            document.body.className = 'theme-' + themeName;
-            localStorage.setItem('selectedTheme', themeName);
+        function setThemeLocal(themeName) {
+            setTheme(themeName);
             closeThemeSelector();
         }
         
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('selectedTheme') || 'light';
-            setTheme(savedTheme);
-        }
-        
         function loadNote() {
-            const notes = getNotes(currentNoteType);
-            const note = notes.find(n => n.id === currentNoteId);
+            notesAPI.getNotes(currentNoteType).then(notes => {
+                const note = notes.find(n => n.id === currentNoteId);
             
-            if (!note) {
-                alert('Note not found');
-                window.location.href = currentNoteType === 'public' ? 'blog.html' : 'private.html';
-                return;
-            }
-            
-            // Check if note is password protected
-            if (note.password) {
-                document.getElementById('password-prompt').style.display = 'block';
-                return;
-            }
-            
-            displayNote(note);
+                if (!note) {
+                    alert('Note not found');
+                    window.location.href = currentNoteType === 'public' ? 'blog.html' : 'private.html';
+                    return;
+                }
+                
+                // Check if note is password protected
+                if (note.password) {
+                    document.getElementById('password-prompt').style.display = 'block';
+                    return;
+                }
+                
+                displayNote(note);
+            }).catch(error => {
+                console.error('Error loading note:', error);
+                alert('Error loading note');
+            });
         }
         
         function checkNotePassword() {
             const input = document.getElementById('note-password-input').value;
-            const notes = getNotes(currentNoteType);
-            const note = notes.find(n => n.id === currentNoteId);
-            const masterPassword = getMasterPassword();
+            notesAPI.getNotes(currentNoteType).then(notes => {
+                const note = notes.find(n => n.id === currentNoteId);
+                const masterPassword = getMasterPassword();
             
-            if (input === note.password || input === masterPassword) {
-                document.getElementById('password-prompt').style.display = 'none';
-                displayNote(note);
-            } else {
-                document.getElementById('note-password-error').textContent = 'Incorrect password';
-            }
+                if (input === note.password || input === masterPassword) {
+                    document.getElementById('password-prompt').style.display = 'none';
+                    displayNote(note);
+                } else {
+                    document.getElementById('note-password-error').textContent = 'Incorrect password';
+                }
+            }).catch(error => {
+                console.error('Error checking password:', error);
+            });
         }
         
         function displayNote(note) {
@@ -415,7 +415,7 @@
             });
         }
         
-        function saveNote() {
+        async function saveNote() {
             const title = document.getElementById('note-title').value || 'Untitled';
             const content = document.getElementById('notepad-textarea').value;
             const saveType = document.querySelector('input[name="save-type"]:checked').value;
@@ -427,40 +427,56 @@
                 title: title,
                 content: content,
                 type: saveType,
-                date: currentNoteId ? getNote(currentNoteId, saveType).date : new Date().toISOString(),
+                date: currentNoteId ? undefined : new Date().toISOString(),
                 password: password || null,
-                attachments: currentNoteId ? (getNote(currentNoteId, saveType).attachments || []) : []
+                attachments: []
             };
             
             // Preserve attachments if editing
             if (currentNoteId) {
-                const existingNote = getNote(currentNoteId, saveType);
-                if (existingNote && existingNote.attachments) {
-                    note.attachments = existingNote.attachments;
+                try {
+                    const existingNote = await notesAPI.getNote(saveType, currentNoteId);
+                    if (existingNote) {
+                        note.date = existingNote.date;
+                        note.attachments = existingNote.attachments || [];
+                    }
+                } catch (error) {
+                    console.error('Error loading existing note:', error);
                 }
             }
             
-            saveNoteToStorage(note);
-            
-            // If type changed, remove from old location
-            if (currentNoteId) {
-                const oldNote = getNote(currentNoteId, saveType === 'public' ? 'private' : 'public');
-                if (oldNote) {
-                    deleteNoteFromStorage(currentNoteId, saveType === 'public' ? 'private' : 'public');
+            try {
+                await notesAPI.saveNote(saveType, note);
+                
+                // If type changed, remove from old location
+                if (currentNoteId && saveType !== currentNoteType) {
+                    try {
+                        await notesAPI.deleteNote(currentNoteType, currentNoteId);
+                    } catch (error) {
+                        console.error('Error deleting from old location:', error);
+                    }
                 }
+                
+                alert('Note saved!');
+                window.location.href = saveType === 'public' ? 'blog.html' : 'private.html';
+            } catch (error) {
+                console.error('Error saving note:', error);
+                alert('Error saving note. Please try again.');
             }
-            
-            alert('Note saved!');
-            window.location.href = saveType === 'public' ? 'blog.html' : 'private.html';
         }
         
-        function deleteNote() {
+        async function deleteNote() {
             if (!currentNoteId) return;
             
             if (confirm('Are you sure you want to delete this note?')) {
-                deleteNoteFromStorage(currentNoteId, currentNoteType);
-                alert('Note deleted!');
-                window.location.href = currentNoteType === 'public' ? 'blog.html' : 'private.html';
+                try {
+                    await notesAPI.deleteNote(currentNoteType, currentNoteId);
+                    alert('Note deleted!');
+                    window.location.href = currentNoteType === 'public' ? 'blog.html' : 'private.html';
+                } catch (error) {
+                    console.error('Error deleting note:', error);
+                    alert('Error deleting note. Please try again.');
+                }
             }
         }
         
@@ -483,28 +499,29 @@
                 }
                 
                 const saveType = document.querySelector('input[name="save-type"]:checked').value;
-                const notes = getNotes(saveType);
-                let note = notes.find(n => n.id === currentNoteId);
-                
-                if (!note) {
-                    note = {
-                        id: currentNoteId,
-                        title: document.getElementById('note-title').value || '',
-                        content: document.getElementById('notepad-textarea').value || '',
-                        type: saveType,
-                        date: new Date().toISOString(),
-                        attachments: []
-                    };
-                }
-                
-                if (!note.attachments) {
-                    note.attachments = [];
-                }
-                
-                note.attachments.push(attachment);
-                saveNoteToStorage(note);
-                
-                displayAttachments(note.attachments);
+                notesAPI.getNotes(saveType).then(notes => {
+                    let note = notes.find(n => n.id === currentNoteId);
+                    
+                    if (!note) {
+                        note = {
+                            id: currentNoteId,
+                            title: document.getElementById('note-title').value || '',
+                            content: document.getElementById('notepad-textarea').value || '',
+                            type: saveType,
+                            date: new Date().toISOString(),
+                            attachments: []
+                        };
+                    }
+                    
+                    if (!note.attachments) {
+                        note.attachments = [];
+                    }
+                    
+                    note.attachments.push(attachment);
+                    notesAPI.saveNote(saveType, note).then(() => {
+                        displayAttachments(note.attachments);
+                    });
+                });
             };
             
             if (file.type.startsWith('image/')) {
@@ -543,14 +560,16 @@
             if (!currentNoteId) return;
             
             const saveType = document.querySelector('input[name="save-type"]:checked').value;
-            const notes = getNotes(saveType);
-            const note = notes.find(n => n.id === currentNoteId);
-            
-            if (note && note.attachments) {
-                note.attachments.splice(index, 1);
-                saveNoteToStorage(note);
-                displayAttachments(note.attachments);
-            }
+            notesAPI.getNotes(saveType).then(notes => {
+                const note = notes.find(n => n.id === currentNoteId);
+                
+                if (note && note.attachments) {
+                    note.attachments.splice(index, 1);
+                    notesAPI.saveNote(saveType, note).then(() => {
+                        displayAttachments(note.attachments);
+                    });
+                }
+            });
         }
         
         function createNewNote(type) {
