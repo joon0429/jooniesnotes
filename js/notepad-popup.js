@@ -1,6 +1,6 @@
 // Popup Notepad Window Manager
 
-export class NotepadPopup {
+class NotepadPopup {
     constructor() {
         this.windows = [];
     }
