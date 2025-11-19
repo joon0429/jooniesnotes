@@ -673,12 +673,13 @@ body.theme-dark-pink {
 }
 
 body.theme-dark-pink nav {
-    border-bottom-color: #ff69b4;
+    border-bottom: 3px solid #ff69b4;
     background-color: #0f0f0f;
 }
 
 body.theme-dark-pink .nav-links a {
     color: #ff69b4;
+    font-weight: bold;
 }
 
 body.theme-dark-pink .nav-links a:hover {
@@ -689,6 +690,7 @@ body.theme-dark-pink .settings-btn {
     background-color: #ff69b4;
     border-color: #ff69b4;
     color: #1a1a1a;
+    font-weight: bold;
 }
 
 body.theme-dark-pink .settings-btn:hover {
@@ -697,19 +699,27 @@ body.theme-dark-pink .settings-btn:hover {
 }
 
 body.theme-dark-pink .theme-selector-nav select {
-    background-color: #2a2a2a;
+    background-color: #ff69b4;
     border-color: #ff69b4;
-    color: #ff69b4;
+    color: #1a1a1a;
+    font-weight: bold;
+    border-width: 2px;
+}
+
+body.theme-dark-pink .theme-selector-nav select:hover {
+    background-color: #ffb3d9;
+    border-color: #ffb3d9;
 }
 
 body.theme-dark-pink .notepad-menubar {
     background-color: #2a2a2a;
-    border-bottom-color: #444;
+    border-bottom: 2px solid #ff69b4;
 }
 
 body.theme-dark-pink .menu-item {
-    border-right-color: #444;
+    border-right: 2px solid #444;
     color: #fff;
+    font-weight: bold;
 }
 
 body.theme-dark-pink .menu-item:hover {
@@ -718,7 +728,7 @@ body.theme-dark-pink .menu-item:hover {
 
 body.theme-dark-pink .dropdown-menu {
     background-color: #2a2a2a;
-    border-color: #444;
+    border: 2px solid #ff69b4;
     color: #fff;
 }
 
@@ -728,12 +738,12 @@ body.theme-dark-pink .dropdown-menu div:hover {
 
 body.theme-dark-pink .notepad-toolbar {
     background-color: #252525;
-    border-bottom-color: #444;
+    border-bottom: 2px solid #ff69b4;
 }
 
 body.theme-dark-pink .title-input {
     background-color: #1a1a1a;
-    border-color: #444;
+    border: 2px solid #ff69b4;
     color: #fff;
 }
 
@@ -748,7 +758,7 @@ body.theme-dark-pink .markdown-preview {
 }
 
 body.theme-dark-pink .notepad-editor-container {
-    border-color: #444;
+    border: 2px solid #ff69b4;
 }
 
 body.theme-dark-pink .file-upload-btn,
@@ -793,7 +803,51 @@ body.theme-dark-pink .markdown-preview code {
 
 body.theme-dark-pink .markdown-preview pre {
     background-color: #2a2a2a;
-    border: 1px solid #ff69b4;
+    border: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink .note-item {
+    border-bottom: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink .password-prompt {
+    border: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink .settings-section {
+    border: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink .gallery-item {
+    border: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink .link-item {
+    border: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink .resume-display {
+    border: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink footer {
+    border-top: 3px solid #ff69b4;
+}
+
+body.theme-dark-pink .notepad-popup-window {
+    border: 3px solid #ff69b4;
+}
+
+body.theme-dark-pink .notepad-popup-header {
+    border-bottom: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink .notepad-popup-menubar {
+    border-bottom: 2px solid #ff69b4;
+}
+
+body.theme-dark-pink .notepad-popup-toolbar {
+    border-bottom: 2px solid #ff69b4;
 }
 
 /* Blue Theme */
@@ -1256,7 +1310,9 @@ footer {
 }
 
 .footer-content {
-    text-align: center;
+    text-align: left;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .footer-content h3 {
