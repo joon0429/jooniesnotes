@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notepad - Joon's Notes</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <nav>
@@ -12,8 +12,21 @@
             <a href="index.html">Home</a>
             <a href="blog.html">Blog</a>
             <a href="private.html">Private Notes</a>
+            <a href="links.html">Links</a>
+            <a href="resume.html">Resume</a>
         </div>
-        <a href="settings.html" class="settings-btn">Settings</a>
+        <div class="nav-right">
+            <div class="theme-selector-nav">
+                <select id="theme-select" onchange="changeThemeFromNav(this.value)">
+                    <option value="light">Light</option>
+                    <option value="dark-pink">Dark Pink</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                </select>
+            </div>
+            <a href="settings.html" class="settings-btn">Settings</a>
+        </div>
     </nav>
     <main class="notepad-container">
         <div id="password-prompt" class="password-prompt" style="display: none;">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Joon's Notes</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <nav>
@@ -12,8 +12,21 @@
             <a href="index.html">Home</a>
             <a href="blog.html">Blog</a>
             <a href="private.html">Private Notes</a>
+            <a href="links.html">Links</a>
+            <a href="resume.html">Resume</a>
         </div>
-        <a href="settings.html" class="settings-btn">Settings</a>
+        <div class="nav-right">
+            <div class="theme-selector-nav">
+                <select id="theme-select" onchange="changeThemeFromNav(this.value)">
+                    <option value="light">Light</option>
+                    <option value="dark-pink">Dark Pink</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                </select>
+            </div>
+            <a href="settings.html" class="settings-btn">Settings</a>
+        </div>
     </nav>
     <main>
         <h1>Settings</h1>
@@ -53,8 +66,31 @@
             </div>
         </div>
     </main>
-    <script src="app.js"></script>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Contact</h3>
+            <div class="footer-links">
+                <a href="#" id="footer-email" class="footer-link">Email</a>
+                <a href="#" id="footer-phone" class="footer-link">Phone</a>
+                <a href="#" id="footer-instagram" class="footer-link">Instagram</a>
+                <a href="#" id="footer-linkedin" class="footer-link">LinkedIn</a>
+                <a href="#" id="footer-youtube" class="footer-link">YouTube</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/utils.js"></script>
     <script>
+        // Initialize theme
+        const theme = getTheme();
+        document.body.className = 'theme-' + theme;
+        document.getElementById('theme-select').value = theme;
+        
+        function changeThemeFromNav(themeName) {
+            setTheme(themeName);
+        }
+        
         // Load user info on page load
         function loadUserInfo() {
             const userInfo = getUserInfo();
@@ -72,7 +108,7 @@
                 bio: document.getElementById('user-bio').value
             };
             
-            saveUserInfoToStorage(userInfo);
+            saveUserInfo(userInfo);
             
             const successMsg = document.getElementById('info-success');
             successMsg.textContent = 'Information saved successfully!';
