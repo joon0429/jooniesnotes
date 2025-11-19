@@ -28,7 +28,7 @@
             <div class="theme-selector-nav">
                 <select id="theme-select" onchange="changeThemeFromNav(this.value)">
                     <option value="light">light</option>
-                    <option value="dark-pink">dark pink</option>
+                    <option value="dark-mode">dark mode</option>
                     <option value="blue">blue</option>
                     <option value="green">green</option>
                     <option value="purple">purple</option>
@@ -145,9 +145,9 @@
                     <div class="theme-preview light-preview"></div>
                     <span>light</span>
                 </div>
-                <div class="theme-option" onclick="setThemeLocal('dark-pink')" data-theme="dark-pink">
-                    <div class="theme-preview dark-pink-preview"></div>
-                    <span>dark pink</span>
+                <div class="theme-option" onclick="setThemeLocal('dark-mode')" data-theme="dark-mode">
+                    <div class="theme-preview dark-mode-preview"></div>
+                    <span>dark mode</span>
                 </div>
                 <div class="theme-option" onclick="setThemeLocal('blue')" data-theme="blue">
                     <div class="theme-preview blue-preview"></div>
@@ -169,6 +169,7 @@
     <script src="../js/api.js"></script>
     <script src="../js/markdown.js"></script>
     <script src="../js/common.js"></script>
+    <script src="../js/background-animation.js"></script>
     <script>
         let currentNoteId = null;
         let currentNoteType = null;

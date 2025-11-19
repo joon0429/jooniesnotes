@@ -21,21 +21,21 @@ const themes = {
         '--button-bold': 'normal',
         '--nav-link-bold': 'normal'
     },
-    'dark-pink': {
+    'dark-mode': {
         '--bg-primary': '#1a1a1a',
         '--bg-secondary': '#252525',
         '--bg-tertiary': '#2a2a2a',
         '--text-primary': '#fff',
         '--text-secondary': '#fff',
         '--text-tertiary': '#ccc',
-        '--accent-color': '#ff69b4',
-        '--accent-hover': '#ffb3d9',
-        '--border-color': '#ff69b4',
+        '--accent-color': '#FFEB3B',
+        '--accent-hover': '#FFD700',
+        '--border-color': '#FFEB3B',
         '--border-thickness': '2px',
         '--nav-bg': '#0f0f0f',
-        '--nav-border': '#ff69b4',
-        '--button-bg': '#ff69b4',
-        '--button-hover': '#ffb3d9',
+        '--nav-border': '#FFEB3B',
+        '--button-bg': '#FFEB3B',
+        '--button-hover': '#FFD700',
         '--button-text': '#1a1a1a',
         '--button-bold': 'bold',
         '--nav-link-bold': 'normal'
