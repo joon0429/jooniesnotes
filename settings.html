@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Joon's Notes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="private.html">Private Notes</a>
+        </div>
+        <a href="settings.html" class="settings-btn">Settings</a>
+    </nav>
+    <main>
+        <h1>Settings</h1>
+        
+        <div class="settings-section">
+            <h2>Basic Information</h2>
+            <div class="settings-form">
+                <label for="user-name">Name:</label>
+                <input type="text" id="user-name" placeholder="Your name">
+                
+                <label for="user-email">Email:</label>
+                <input type="email" id="user-email" placeholder="your.email@example.com">
+                
+                <label for="user-bio">Bio:</label>
+                <textarea id="user-bio" placeholder="A little about yourself..." rows="4"></textarea>
+                
+                <button onclick="saveUserInfo()" class="save-btn">Save Information</button>
+                <p id="info-success" class="success-message" style="display: none;"></p>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h2>Change Master Password</h2>
+            <div class="settings-form">
+                <label for="current-password">Current Master Password:</label>
+                <input type="password" id="current-password" placeholder="Enter current password">
+                
+                <label for="new-password">New Master Password:</label>
+                <input type="password" id="new-password" placeholder="Enter new password">
+                
+                <label for="confirm-password">Confirm New Password:</label>
+                <input type="password" id="confirm-password" placeholder="Confirm new password">
+                
+                <button onclick="changeMasterPassword()" class="save-btn">Change Password</button>
+                <p id="password-success" class="success-message" style="display: none;"></p>
+                <p id="password-error" class="error" style="display: none;"></p>
+            </div>
+        </div>
+    </main>
+    <script src="app.js"></script>
+    <script>
+        // Load user info on page load
+        function loadUserInfo() {
+            const userInfo = getUserInfo();
+            if (userInfo) {
+                document.getElementById('user-name').value = userInfo.name || '';
+                document.getElementById('user-email').value = userInfo.email || '';
+                document.getElementById('user-bio').value = userInfo.bio || '';
+            }
+        }
+        
+        function saveUserInfo() {
+            const userInfo = {
+                name: document.getElementById('user-name').value,
+                email: document.getElementById('user-email').value,
+                bio: document.getElementById('user-bio').value
+            };
+            
+            saveUserInfoToStorage(userInfo);
+            
+            const successMsg = document.getElementById('info-success');
+            successMsg.textContent = 'Information saved successfully!';
+            successMsg.style.display = 'block';
+            successMsg.style.color = '#2e7d32';
+            
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        }
+        
+        function changeMasterPassword() {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            const errorMsg = document.getElementById('password-error');
+            const successMsg = document.getElementById('password-success');
+            
+            // Hide previous messages
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            
+            // Validate
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                errorMsg.textContent = 'Please fill in all fields';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // Check current password
+            const storedPassword = getMasterPassword();
+            if (currentPassword !== storedPassword) {
+                errorMsg.textContent = 'Current password is incorrect';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // Check if new passwords match
+            if (newPassword !== confirmPassword) {
+                errorMsg.textContent = 'New passwords do not match';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // Check minimum length
+            if (newPassword.length < 4) {
+                errorMsg.textContent = 'Password must be at least 4 characters long';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // Change password
+            setMasterPassword(newPassword);
+            
+            successMsg.textContent = 'Master password changed successfully!';
+            successMsg.style.display = 'block';
+            
+            // Clear form
+            document.getElementById('current-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+            
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Load user info when page loads
+        loadUserInfo();
+    </script>
+</body>
+</html>
+
