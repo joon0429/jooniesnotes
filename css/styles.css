@@ -673,7 +673,33 @@ body.theme-dark-pink {
 }
 
 body.theme-dark-pink nav {
-    border-bottom-color: #333;
+    border-bottom-color: #ff69b4;
+    background-color: #0f0f0f;
+}
+
+body.theme-dark-pink .nav-links a {
+    color: #ff69b4;
+}
+
+body.theme-dark-pink .nav-links a:hover {
+    color: #ffb3d9;
+}
+
+body.theme-dark-pink .settings-btn {
+    background-color: #ff69b4;
+    border-color: #ff69b4;
+    color: #1a1a1a;
+}
+
+body.theme-dark-pink .settings-btn:hover {
+    background-color: #ffb3d9;
+    border-color: #ffb3d9;
+}
+
+body.theme-dark-pink .theme-selector-nav select {
+    background-color: #2a2a2a;
+    border-color: #ff69b4;
+    color: #ff69b4;
 }
 
 body.theme-dark-pink .notepad-menubar {
@@ -727,16 +753,33 @@ body.theme-dark-pink .notepad-editor-container {
 
 body.theme-dark-pink .file-upload-btn,
 body.theme-dark-pink .theme-toggle,
-body.theme-dark-pink .format-btn {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #ff69b4;
+body.theme-dark-pink .format-btn,
+body.theme-dark-pink button,
+body.theme-dark-pink .upload-btn,
+body.theme-dark-pink .filter-tag,
+body.theme-dark-pink .save-btn,
+body.theme-dark-pink .popup-btn:not(.close) {
+    background-color: #ff69b4;
+    border-color: #ff69b4;
+    color: #1a1a1a;
 }
 
 body.theme-dark-pink .file-upload-btn:hover,
 body.theme-dark-pink .theme-toggle:hover,
-body.theme-dark-pink .format-btn:hover {
-    background-color: #3a3a3a;
+body.theme-dark-pink .format-btn:hover,
+body.theme-dark-pink button:hover,
+body.theme-dark-pink .upload-btn:hover,
+body.theme-dark-pink .filter-tag:hover,
+body.theme-dark-pink .save-btn:hover,
+body.theme-dark-pink .popup-btn:not(.close):hover {
+    background-color: #ffb3d9;
+    border-color: #ffb3d9;
+}
+
+body.theme-dark-pink .filter-tag.active {
+    background-color: #ff69b4;
+    border-color: #ff69b4;
+    color: #1a1a1a;
 }
 
 body.theme-dark-pink .markdown-preview a {
@@ -1238,5 +1281,79 @@ footer {
 .footer-link:hover {
     color: #666;
     text-decoration: underline;
+}
+
+/* Button Press Animation */
+button, .format-btn, .file-upload-btn, .theme-toggle, .upload-btn, 
+.filter-tag, .save-btn, .popup-btn, .settings-btn, .external-link-btn,
+.form-actions button {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+button:active, .format-btn:active, .file-upload-btn:active, 
+.theme-toggle:active, .upload-btn:active, .filter-tag:active,
+.save-btn:active, .popup-btn:active, .settings-btn:active,
+.external-link-btn:active, .form-actions button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Links page styles */
+.links-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.link-item {
+    padding: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.link-item h2 {
+    margin-bottom: 10px;
+}
+
+.link-item p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.external-link-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: all 0.2s;
+}
+
+.external-link-btn:hover {
+    background-color: #555;
+}
+
+/* Resume page styles */
+.resume-display {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-height: 400px;
+}
+
+.resume-pdf {
+    width: 100%;
+    height: 800px;
+    border: none;
+}
+
+.resume-text {
+    white-space: pre-wrap;
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.8;
 }
 
