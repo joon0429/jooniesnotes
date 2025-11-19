@@ -18,8 +18,7 @@ class GalleryManager {
     
     async loadTags() {
         try {
-            const response = await fetch(`${API_BASE}/images/tags/all`);
-            this.tags = await response.json();
+            this.tags = await imagesAPI.getAllTags();
         } catch (error) {
             console.error('Error loading tags:', error);
             this.tags = [];
@@ -28,9 +27,7 @@ class GalleryManager {
     
     async loadImages(tag = null) {
         try {
-            const url = tag ? `${API_BASE}/images?tag=${encodeURIComponent(tag)}` : `${API_BASE}/images`;
-            const response = await fetch(url);
-            this.images = await response.json();
+            this.images = await imagesAPI.getImages(tag);
             this.renderGallery();
         } catch (error) {
             console.error('Error loading images:', error);
@@ -69,17 +66,24 @@ class GalleryManager {
             return;
         }
         
-        galleryContainer.innerHTML = this.images.map(image => `
-            <div class="gallery-item" data-image-id="${image.id}">
-                <img src="http://localhost:3000${image.path}" alt="${image.caption}" loading="lazy">
-                <div class="gallery-item-overlay">
-                    <p class="gallery-caption">${image.caption || 'No caption'}</p>
-                    <div class="gallery-tags">
-                        ${image.tags && image.tags.length > 0 ? image.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+        galleryContainer.innerHTML = this.images.map(image => {
+            // Handle both backend URLs and data URLs
+            const imageSrc = image.path.startsWith('data:') || image.path.startsWith('http') 
+                ? image.path 
+                : `http://localhost:3000${image.path}`;
+            
+            return `
+                <div class="gallery-item" data-image-id="${image.id}">
+                    <img src="${imageSrc}" alt="${image.caption}" loading="lazy">
+                    <div class="gallery-item-overlay">
+                        <p class="gallery-caption">${image.caption || 'No caption'}</p>
+                        <div class="gallery-tags">
+                            ${image.tags && image.tags.length > 0 ? image.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                        </div>
                     </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
     
     openUploadModal() {
@@ -125,23 +129,13 @@ class GalleryManager {
             uploadFormData.append('caption', caption || '');
             uploadFormData.append('tags', tags || '');
             
-            const response = await fetch(`${API_BASE}/images/upload`, {
-                method: 'POST',
-                body: uploadFormData
-            });
-            
-            if (response.ok) {
-                const image = await response.json();
-                this.images.unshift(image);
-                await this.loadTags();
-                this.renderGallery();
-                this.renderTagFilter();
-                this.closeUploadModal();
-                alert('Image uploaded successfully!');
-            } else {
-                const error = await response.json();
-                alert(error.error || 'Error uploading image');
-            }
+            const image = await imagesAPI.uploadImage(file, caption, tags);
+            this.images.unshift(image);
+            await this.loadTags();
+            this.renderGallery();
+            this.renderTagFilter();
+            this.closeUploadModal();
+            alert('Image uploaded successfully!');
         } catch (error) {
             console.error('Error uploading image:', error);
             alert('Error uploading image. Please try again.');
