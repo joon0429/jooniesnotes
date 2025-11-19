@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Notes - Joon's Notes</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="private.html">Private Notes</a>
+        </div>
+        <div class="nav-right">
+            <div class="theme-selector-nav">
+                <select id="theme-select" onchange="changeThemeFromNav(this.value)">
+                    <option value="light">Light</option>
+                    <option value="dark-pink">Dark Pink</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                </select>
+            </div>
+            <a href="settings.html" class="settings-btn">Settings</a>
+        </div>
+    </nav>
+    <main>
+        <div id="password-prompt" class="password-prompt">
+            <h2>Enter Master Password</h2>
+            <input type="password" id="master-password-input" placeholder="Master password">
+            <button onclick="checkMasterPassword()">Access Private Notes</button>
+            <p id="password-error" class="error"></p>
+        </div>
+        <div id="private-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1>Private Notes</h1>
+                <button onclick="openNewNote('private')" style="padding: 8px 16px; background-color: #333; color: white; border: none; border-radius: 3px; cursor: pointer;">New Note</button>
+            </div>
+            <div id="private-list" class="note-list"></div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Contact</h3>
+            <div class="footer-links">
+                <a href="#" id="footer-email" class="footer-link">Email</a>
+                <a href="#" id="footer-phone" class="footer-link">Phone</a>
+                <a href="#" id="footer-instagram" class="footer-link">Instagram</a>
+                <a href="#" id="footer-linkedin" class="footer-link">LinkedIn</a>
+                <a href="#" id="footer-youtube" class="footer-link">YouTube</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/notepad-popup.js"></script>
+    <script>
+        // Initialize theme
+        const theme = getTheme();
+        document.body.className = 'theme-' + theme;
+        document.getElementById('theme-select').value = theme;
+        
+        function changeThemeFromNav(themeName) {
+            setTheme(themeName);
+        }
+        
+        function openNewNote(type) {
+            notepadPopup.createWindow(null, type);
+        }
+        
+        function openNote(id, type) {
+            notepadPopup.createWindow(id, type);
+        }
+        
+        // Check if already authenticated
+        if (sessionStorage.getItem('privateAuthenticated') === 'true') {
+            showPrivateContent();
+        }
+        
+        function checkMasterPassword() {
+            const input = document.getElementById('master-password-input').value;
+            const masterPassword = getMasterPassword();
+            
+            if (input === masterPassword) {
+                sessionStorage.setItem('privateAuthenticated', 'true');
+                showPrivateContent();
+            } else {
+                document.getElementById('password-error').textContent = 'Incorrect password';
+            }
+        }
+        
+        function showPrivateContent() {
+            document.getElementById('password-prompt').style.display = 'none';
+            document.getElementById('private-content').style.display = 'block';
+            loadPrivateNotes();
+        }
+        
+        async function loadPrivateNotes() {
+            try {
+                const notes = await notesAPI.getNotes('private');
+                const privateList = document.getElementById('private-list');
+                
+                if (notes.length === 0) {
+                    privateList.innerHTML = '<p>No private notes yet.</p>';
+                    return;
+                }
+                
+                // Sort by date, newest first
+                notes.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                privateList.innerHTML = notes.map(note => `
+                    <div class="note-item" onclick="openNote('${note.id}', 'private')">
+                        <div class="note-title">${note.title || 'Untitled'}</div>
+                        <div class="note-date">${formatDate(note.date)}</div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading notes:', error);
+                document.getElementById('private-list').innerHTML = '<p>Error loading notes. Make sure the backend server is running.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
