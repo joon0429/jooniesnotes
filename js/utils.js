@@ -43,6 +43,10 @@ function getTheme() {
 }
 
 function setTheme(themeName) {
+    // This function is kept for backward compatibility
+    // The actual theme application is handled by applyTheme in common.js
     localStorage.setItem('selectedTheme', themeName);
-    document.body.className = 'theme-' + themeName;
+    if (typeof applyTheme === 'function') {
+        applyTheme(themeName);
+    }
 }
