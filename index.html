@@ -3,10 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>Joon's Notes</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Hello World</h1>
+    <nav>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="private.html">Private Notes</a>
+        </div>
+        <div class="nav-right">
+            <div class="theme-selector-nav">
+                <select id="theme-select" onchange="changeThemeFromNav(this.value)">
+                    <option value="light">Light</option>
+                    <option value="dark-pink">Dark Pink</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                </select>
+            </div>
+            <a href="settings.html" class="settings-btn">Settings</a>
+        </div>
+    </nav>
+    <main>
+        <div class="gallery-header">
+            <h1>Image Gallery</h1>
+            <button class="upload-btn" onclick="galleryManager.openUploadModal()">Upload Image</button>
+        </div>
+        <div id="gallery-filters" class="gallery-filters"></div>
+        <div id="gallery-container" class="gallery-container"></div>
+    </main>
+    
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="upload-modal">
+        <div class="upload-modal-content">
+            <div class="upload-modal-header">
+                <h2>Upload Image</h2>
+                <span class="close-upload" onclick="galleryManager.closeUploadModal()">&times;</span>
+            </div>
+            <form id="upload-form" onsubmit="galleryManager.handleUpload(event)">
+                <div class="form-group">
+                    <label for="image-file">Select Image:</label>
+                    <input type="file" id="image-file" name="image" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="image-caption">Caption (max 50 words):</label>
+                    <textarea id="image-caption" name="caption" rows="3" placeholder="Enter caption..."></textarea>
+                    <span class="word-count">0 / 50 words</span>
+                </div>
+                <div class="form-group">
+                    <label for="image-tags">Tags (comma-separated):</label>
+                    <input type="text" id="image-tags" name="tags" placeholder="e.g., nature, travel, food">
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="galleryManager.closeUploadModal()">Cancel</button>
+                    <button type="submit">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Contact</h3>
+            <div class="footer-links">
+                <a href="#" id="footer-email" class="footer-link">Email</a>
+                <a href="#" id="footer-phone" class="footer-link">Phone</a>
+                <a href="#" id="footer-instagram" class="footer-link">Instagram</a>
+                <a href="#" id="footer-linkedin" class="footer-link">LinkedIn</a>
+                <a href="#" id="footer-youtube" class="footer-link">YouTube</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/gallery.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        // Initialize theme
+        const theme = getTheme();
+        document.body.className = 'theme-' + theme;
+        document.getElementById('theme-select').value = theme;
+        
+        function changeThemeFromNav(themeName) {
+            setTheme(themeName);
+        }
+        
+        // Initialize gallery
+        document.addEventListener('DOMContentLoaded', () => {
+            galleryManager.init();
+        });
+        
+        // Word count for caption
+        document.getElementById('image-caption').addEventListener('input', function() {
+            const text = this.value.trim();
+            const wordCount = text ? text.split(/\s+/).length : 0;
+            const wordCountSpan = document.querySelector('.word-count');
+            wordCountSpan.textContent = `${wordCount} / 50 words`;
+            if (wordCount > 50) {
+                wordCountSpan.style.color = '#d32f2f';
+            } else {
+                wordCountSpan.style.color = '#666';
+            }
+        });
+    </script>
 </body>
 </html>
-
